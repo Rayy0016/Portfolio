@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #9F99FF, #98DFFF);
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            animation: backgroundAnimation 2s linear infinite;
+            overflow: hidden;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: 50px;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .discord_button {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: #5865F2;
+            color: #FFF;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .youtube_button {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: #FF0000;
+            color: #FFF;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .github_button {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: #24292E;
+            color: #FFF;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .minecraft_button {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: #FFF;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .discord_button:hover {
+            background-color: #7289DA;
+        }
+
+        .youtube_button:hover {
+            background-color: #FF4040;
+        }
+
+        .github_button:hover {
+            background-color: #33393F;
+        }
+
+        .minecraft_button:hover {
+            background-color: #45AA52;
+        }
+
+        h1 {
+            color: #FFF;
+            font-size: 32px;
+            margin-top: 30px;
+        }
+
+        h2 {
+            color: black;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .clipboard_message {
+            color: #000000;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: opacity 0.3s ease;
+            font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <br /><br /><br /><br /><br />
+        <h1><b>❤ _Ray_y / Ray ❤</b></h1>
+        <canvas id="visualizer"></canvas>
+        <audio id="backgroundMusic" src="background_music.mp3" autoplay loop></audio>
+        <div class="profile-image">
+            <img src="https://media.discordapp.net/attachments/1109769499110014986/1117568277711962222/IMG_4060.jpg?width=588&height=630" alt="Profile Image">
+        </div><br /><br />
+        <h2>Hey there! I'm Ray or _Ray_y. I'm a Frontend HTML, CSS, and JavaScript Developer. However, I also know languages such as C# and ...Skript ig? <br>I am currently open to website commissions, which can be requested by DMing my Discord.</h2><br />
+        <button class="discord_button" onclick="copyToClipboard('Ray.#3116')">Discord</button>
+        <button class="youtube_button" onclick="copyToClipboard('https://youtube.com/@_ray_ys')">YouTube</button><br /><br />
+        <button class="github_button" onclick="copyToClipboard('https://github.com/Rayy0016')">GitHub</button>
+        <button class="minecraft_button" onclick="copyToClipboard('_Ray_y')">Minecraft</button>
+        <div class="clipboard_message hidden" id="clipboardMessage"><b>Copied to Clipboard</b></div>
+
+        <script>
+            window.addEventListener('load', () => {
+                const canvas = document.getElementById('visualizer');
+                const audio = document.getElementById('backgroundMusic');
+                const audioContext = new(window.AudioContext || window.webkitAudioContext)();
+                const analyser = audioContext.createAnalyser();
+                const source = audioContext.createMediaElementSource(audio);
+
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                const canvasContext = canvas.getContext('2d');
+                canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
+                const WIDTH = canvas.width;
+                const HEIGHT = canvas.height;
+
+                function draw() {
+                    const drawVisual = requestAnimationFrame(draw);
+
+                    analyser.getByteFrequencyData(dataArray);
+
+                    canvasContext.clearRect(0, 0, WIDTH, HEIGHT);
+
+                    const barWidth = (WIDTH / bufferLength) * 2.5;
+                    let barHeight;
+                    let x = 0;
+
+                    canvasContext.fillStyle = '#FFFFFF';
+
+                    for (let i = 0; i < bufferLength; i++) {
+                        barHeight = dataArray[i] / 2;
+
+                        canvasContext.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+
+                        x += barWidth + 1;
+                    }
+                }
+
+                draw();
+            });
+        </script>
+    </center>
+</body>
+
+</html>
